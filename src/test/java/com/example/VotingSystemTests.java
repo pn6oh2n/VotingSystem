@@ -19,23 +19,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
-//@AutoConfigureMockMvc
-@SpringBootTest//(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @RunWith(SpringRunner.class)
-//@Configuration
-//@WebAppConfiguration
-//@ComponentScan(basePackages = {"com.example"}) // are you sure you wanna scan all the packages?
-//@EnableJpaRepositories//(basePackageClasses = DishRepository.class) // assuming you have all the spring data repo in the same package
-//@PropertySource("classpath:application.properties")
-public class UserDaoTest {
+@SpringBootTest
+public class VotingSystemTests {
 
-	/*@Autowired
-	private ApplicationContext wac;*/
-
-	/*@Autowired
-	private TestRestTemplate restTemplate;*/
-
-	//@Autowired
 	private MockMvc mockMvc;
 
 	@Autowired
@@ -50,7 +37,11 @@ public class UserDaoTest {
 	}
 
 	@Test
-    public void testDishRepository() {
+	public void contextLoads() {
+	}
+
+	@Test
+	public void testDishRepository() {
 		Dish dish = new Dish();
 		dish.setName("dish1");
 		dish.setPrice(99.99);
@@ -60,10 +51,10 @@ public class UserDaoTest {
 		dish.setPrice(33.33);
 		dishRepository.save(dish);
 
-    	Assert.assertNotNull(dish);
-    	Assert.assertEquals(33.33, dish.getPrice(), 0.001);
-    	Assert.assertEquals("dish1", dish.getName());
-    }
+		Assert.assertNotNull(dish);
+		Assert.assertEquals(33.33, dish.getPrice(), 0.001);
+		Assert.assertEquals("dish1", dish.getName());
+	}
 
 	@Test
 	public void testDishController() throws Exception {

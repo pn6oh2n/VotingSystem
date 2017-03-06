@@ -22,3 +22,7 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+
+### H2 DataBase ###
+/test.mv.db
+/test.trace.db
