@@ -9,12 +9,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -27,10 +23,10 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @SpringBootTest//(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @RunWith(SpringRunner.class)
 //@Configuration
-@WebAppConfiguration
-@ComponentScan(basePackages = {"com.example"}) // are you sure you wanna scan all the packages?
-@EnableJpaRepositories//(basePackageClasses = DishRepository.class) // assuming you have all the spring data repo in the same package
-@PropertySource("classpath:application.properties")
+//@WebAppConfiguration
+//@ComponentScan(basePackages = {"com.example"}) // are you sure you wanna scan all the packages?
+//@EnableJpaRepositories//(basePackageClasses = DishRepository.class) // assuming you have all the spring data repo in the same package
+//@PropertySource("classpath:application.properties")
 public class UserDaoTest {
 
 	/*@Autowired
