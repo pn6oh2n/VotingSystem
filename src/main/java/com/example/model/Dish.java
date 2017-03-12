@@ -1,21 +1,13 @@
 package com.example.model;
 
 import javax.persistence.Entity;
+import javax.validation.constraints.NotNull;
 
 @Entity
-//@Table(name = "dishes")
 public class Dish extends NamedEntity{
-    //@ManyToOne//(fetch = FetchType.LAZY)
-    //Menu menu;
-    Double price;
 
-    /*public Menu getMenu() {
-        return menu;
-    }
-
-    public void setMenu(Menu menu) {
-        this.menu = menu;
-    }*/
+    @NotNull
+    private Double price;
 
     public Double getPrice() {
         return price;

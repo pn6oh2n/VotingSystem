@@ -1,28 +1,19 @@
 package com.example.model;
 
-import com.example.View;
-import com.fasterxml.jackson.annotation.JsonView;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
-//@Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "name")})
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = "name")})
 public class User extends NamedEntity{
 
-	//@Column(name = "password", nullable = false)
 	@NotBlank
-	@Length(min = 5)
-	@JsonView(View.REST.class)
+	@Length(min = 4)
 	@SafeHtml
-	public String password;
-
-	@OneToMany(fetch = FetchType.LAZY)
-	List<Vote> votes;
+	private String password;
 
 	@Enumerated(EnumType.STRING)
 	private Role role;
@@ -33,14 +24,6 @@ public class User extends NamedEntity{
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public List<Vote> getVotes() {
-		return votes;
-	}
-
-	public void setVotes(List<Vote> votes) {
-		this.votes = votes;
 	}
 
 	public Role getRole() {
@@ -54,9 +37,10 @@ public class User extends NamedEntity{
 	@Override
 	public String toString() {
 		return "User{" +
-				"id=" + password +
+				"id=" + getId() +
+				", name='" + getName() + "'" +
 				", password='" + password + "'" +
-				", votes=" + votes +
+				//", votes=" + votes +
 				", role=" + role +
 				'}';
 	}

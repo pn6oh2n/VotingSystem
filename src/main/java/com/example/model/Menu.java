@@ -1,22 +1,24 @@
 package com.example.model;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.sql.Date;
 import java.util.List;
 
 @Entity
-//@Table(name = "menus")
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"restaurant_id", "date"})})
 public class Menu extends BaseEntity{
 
-    @ManyToOne//(fetch = FetchType.LAZY)
-    Restaurant restaurant;
+    @NotNull
+    @ManyToOne
+    private Restaurant restaurant;
 
-    Date menuDate;
+    @NotNull
+    private Date date;
 
-    @ManyToMany //(fetch = FetchType.LAZY)
-    List<Dish> dishes;
+    @NotNull
+    @ManyToMany
+    private List<Dish> dishes;
 
     public Restaurant getRestaurant() {
         return restaurant;
@@ -26,12 +28,12 @@ public class Menu extends BaseEntity{
         this.restaurant = restaurant;
     }
 
-    public Date getMenuDate() {
-        return menuDate;
+    public Date getDate() {
+        return date;
     }
 
-    public void setMenuDate(Date menuDate) {
-        this.menuDate = menuDate;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public List<Dish> getDishes() {

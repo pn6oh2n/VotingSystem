@@ -1,0 +1,30 @@
+#!/bin/sh
+# Admin can insert/update/delete/get users
+curl -s -S -u admin:admin -X POST -H "Content-Type: application/json" -d '{"name":"user", "password":"user", "role":"ROLE_USER"}' http://localhost:8080/api/v1/users
+curl -s -S -u admin:admin -X GET http://localhost:8080/api/v1/users
+curl -s -S -u admin:admin -X POST -H "Content-Type: application/json" -d '{"id":1, "name":"user updated", "password":"password updated"}' http://localhost:8080/api/v1/users
+curl -s -S -u admin:admin -X GET http://localhost:8080/api/v1/users/1
+curl -s -S -u admin:admin -X DELETE http://localhost:8080/api/v1/users/1
+# Admin can insert/update/delete/get restaurants
+curl -s -S -u admin:admin -X POST -H "Content-Type: application/json" -d '{"name":"Restaurant 1"}' http://localhost:8080/api/v1/restaurants
+curl -s -S -u admin:admin -X GET http://localhost:8080/api/v1/restaurants
+curl -s -S -u admin:admin -X POST -H "Content-Type: application/json" -d '{"id":1, "name":"Restaurant 1 updated"}' http://localhost:8080/api/v1/restaurants
+curl -s -S -u admin:admin -X GET http://localhost:8080/api/v1/restaurants/1
+curl -s -S -u admin:admin -X DELETE http://localhost:8080/api/v1/restaurants/1
+# Admin can insert/update/delete/get dishes
+curl -s -S -u admin:admin -X POST -H "Content-Type: application/json" -d '{"name":"Dish 1", "price":12.34}' http://localhost:8080/api/v1/dishes
+curl -s -S -u admin:admin -X GET http://localhost:8080/api/v1/dishes
+curl -s -S -u admin:admin -X POST -H "Content-Type: application/json" -d '{"id":1, "name":"Dish 1 updated", "price":99.99}' http://localhost:8080/api/v1/dishes
+curl -s -S -u admin:admin -X GET http://localhost:8080/api/v1/dishes/1
+curl -s -S -u admin:admin -X DELETE http://localhost:8080/api/v1/dishes/1
+# Admin can insert/update/delete menus
+curl -s -S -u admin:admin -X POST -H "Content-Type: application/json" -d '{"restaurantId":1,"date":"2017-03-06","dishes":[1,3,4]}' http://localhost:8080/api/v1/menus
+curl -s -S -u admin:admin -X GET http://localhost:8080/api/v1/menus?date=2017-03-06
+curl -s -S -u admin:admin -X DELETE http://localhost:8080/api/v1/menus/1
+# Any user can get a menu for today or any other date
+curl -s -S -u admin:admin -X GET http://localhost:8080/api/v1/menus
+curl -s -S -u user:user -X GET http://localhost:8080/api/v1/menus?date=2017-03-06
+# Any authenticated user can vote for any restaurant by id
+curl -s -S -u admin:admin -X POST http://localhost:8080/api/v1/votes/1
+# Any authenticated user can get vote results
+curl -s -S -u user:user -X GET http://localhost:8080/api/v1/results

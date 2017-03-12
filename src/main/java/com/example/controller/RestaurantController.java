@@ -4,32 +4,62 @@ import com.example.dao.RestaurantRepository;
 import com.example.model.Restaurant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 
+import static com.example.Util.API_V1;
+import static com.example.ValidationUtil.checkNotFoundWithId;
+
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 @RestController
+@RequestMapping(value = API_V1 + "/restaurants")
 public class RestaurantController {
 
+    private final RestaurantRepository restaurantRepository;
+
     @Autowired
-    private RestaurantRepository restaurantRepository;
-    @GetMapping("/restaurant")
+    public RestaurantController(RestaurantRepository restaurantRepository) {
+        this.restaurantRepository = restaurantRepository;
+    }
+
+    @GetMapping
     public Iterable<Restaurant> getAllRestaurants(){
         return restaurantRepository.findAll();
     }
 
-    @GetMapping("/restaurant/{id}")
+    @GetMapping("/{id}")
     public Restaurant getRestaurant(@PathVariable("id") Integer id){
-        return restaurantRepository.findOne(id);
+        return checkNotFoundWithId(restaurantRepository.findOne(id), id);
     }
 
-    @PostMapping(value = "/restaurant", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void saveRestaurant(@Valid @RequestBody Restaurant restaurant){
-        restaurantRepository.save(restaurant);
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Restaurant updateRestaurant(@Valid @RequestBody Restaurant restaurant){
+        Assert.notNull(restaurant, "restaurant must not be null");
+        return checkNotFoundWithId(restaurantRepository.save(restaurant), restaurant.getId());
     }
 
-    @DeleteMapping("/restaurant/{id}")
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Restaurant> createRestaurant(@Valid @RequestBody Restaurant restaurant){
+        Assert.notNull(restaurant, "restaurant must not be null");
+        Restaurant created = restaurantRepository.save(restaurant);
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentContextPath()
+                .path("/restaurants" + "/{id}")
+                .buildAndExpand(created.getId())
+                .toUri();
+        return ResponseEntity.created(uri).body(created);
+    }
+
+    @DeleteMapping("/{id}")
     public void delRestaurant(@PathVariable("id") Integer id){
+        Assert.notNull(id, "restaurant must not be null");
+        checkNotFoundWithId(restaurantRepository.findOne(id), id);
         restaurantRepository.delete(id);
     }
 }

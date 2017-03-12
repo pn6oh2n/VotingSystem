@@ -1,0 +1,2 @@
+#Do it in H2 web console:
+SCRIPT DROP TO 'src/main/resources/schema.sql'

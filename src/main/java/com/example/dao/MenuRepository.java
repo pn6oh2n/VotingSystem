@@ -7,5 +7,6 @@ import java.sql.Date;
 import java.util.List;
 
 public interface MenuRepository extends JpaRepository<Menu, Integer> {
-    List<Menu> findByMenuDate(Date menuDate);
+    List<Menu> findByDate(Date date);
+    Menu findByDateAndRestaurantId(Date date, Integer restaurantId);
 }

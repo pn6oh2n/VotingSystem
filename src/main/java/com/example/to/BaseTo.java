@@ -2,14 +2,10 @@ package com.example.to;
 
 import com.example.HasId;
 
-abstract public class BaseTo implements HasId {
+abstract class BaseTo implements HasId {
     protected Integer id;
 
-    public BaseTo() {}
-
-    public BaseTo(Integer id) {
-        this.id = id;
-    }
+    BaseTo() {}
 
     @Override
     public Integer getId() {

@@ -2,33 +2,32 @@ package com.example.to;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
 
-public class MenuTo extends BaseTo {
+public class MenuTo extends BaseTo implements Serializable {
 
-    private final Integer restaurant;
+    private final Integer restaurantId;
 
-    private final Date menuDate;
+    private final Date date;
 
     private final List<Integer> dishes;
 
-    public MenuTo(@JsonProperty("id") Integer id,
-                  @JsonProperty("restaurant") Integer restaurant,
-                  @JsonProperty("menuDate") Date menuDate,
+    public MenuTo(@JsonProperty("restaurantId") Integer restaurantId,
+                  @JsonProperty("date") Date date,
                   @JsonProperty("dishes") List<Integer> dishes) {
-        super(id);
-        this.restaurant = restaurant;
-        this.menuDate = menuDate;
+        this.restaurantId = restaurantId;
+        this.date = date;
         this.dishes = dishes;
     }
 
-    public Integer getRestaurant() {
-        return restaurant;
+    public Integer getRestaurantId() {
+        return restaurantId;
     }
 
-    public Date getMenuDate() {
-        return menuDate;
+    public Date getDate() {
+        return date;
     }
 
     public List<Integer> getDishes() {
@@ -38,8 +37,8 @@ public class MenuTo extends BaseTo {
     @Override
     public String toString() {
         return "MenuTo{" +
-                "restaurant=" + restaurant +
-                ", menuDate=" + menuDate +
+                "restaurantId=" + restaurantId +
+                ", date=" + date +
                 ", dishes=" + dishes +
                 '}';
     }

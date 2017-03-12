@@ -1,1 +1,1 @@
-java -jar target/demo-0.0.1-SNAPSHOT.jar
+java -jar target/VotingSystem-0.0.1-SNAPSHOT.jar

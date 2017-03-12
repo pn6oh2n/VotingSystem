@@ -1,5 +1,8 @@
 package com.example;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public interface HasId {
     Integer getId();
 

@@ -2,17 +2,22 @@ package com.example.model;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 import java.sql.Date;
 
 @Entity
 public class Vote extends BaseEntity {
-    @ManyToOne//(fetch = FetchType.LAZY)
-    Restaurant restaurant;
 
-    Date voteDate;
+    @NotNull
+    @ManyToOne
+    private Restaurant restaurant;
 
-    @ManyToOne//(fetch = FetchType.LAZY)
-    User user;
+    @NotNull
+    private Date date;
+
+    @NotNull
+    @ManyToOne
+    private User user;
 
     public Restaurant getRestaurant() {
         return restaurant;
@@ -22,12 +27,12 @@ public class Vote extends BaseEntity {
         this.restaurant = restaurant;
     }
 
-    public Date getVoteDate() {
-        return voteDate;
+    public Date getDate() {
+        return date;
     }
 
-    public void setVoteDate(Date voteDate) {
-        this.voteDate = voteDate;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public User getUser() {
@@ -36,5 +41,14 @@ public class Vote extends BaseEntity {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "Vote{" +
+                "restaurant=" + restaurant +
+                ", date=" + date +
+                ", user=" + user +
+                '}';
     }
 }
