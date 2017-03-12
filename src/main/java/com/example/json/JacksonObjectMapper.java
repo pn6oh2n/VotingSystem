@@ -14,7 +14,7 @@ public class JacksonObjectMapper extends ObjectMapper {
 
     private static final ObjectMapper MAPPER = new JacksonObjectMapper();
 
-    static ObjectMapper getMapper() {
+    public static ObjectMapper getMapper() {
         return MAPPER;
     }
 
