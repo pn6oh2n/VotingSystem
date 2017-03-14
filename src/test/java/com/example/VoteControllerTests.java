@@ -39,7 +39,7 @@ public class VoteControllerTests extends BaseTests {
     }
 
     @Test
-    public void testAddVoteAgainAfter11AM() throws Exception {
+    public void testAddVoteAgain() throws Exception {
         Vote vote = getCreatedVote(true);
         mockMvc.perform(post(URL + "/" + vote.getRestaurant().getId())
                 .header(HttpHeaders.AUTHORIZATION, HTTP_AUTH_ADMIN)
@@ -52,6 +52,12 @@ public class VoteControllerTests extends BaseTests {
                     .content(JsonUtil.writeValue(vote))
                     .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isAlreadyReported());
+        } else {
+            mockMvc.perform(post(URL + "/" + vote.getRestaurant().getId())
+                    .header(HttpHeaders.AUTHORIZATION, HTTP_AUTH_ADMIN)
+                    .content(JsonUtil.writeValue(vote))
+                    .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk());
         }
     }
 }

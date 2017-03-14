@@ -53,14 +53,14 @@ public class VoteController {
 
     @PostMapping("/{idRestaurant}")
     public void addVote(@PathVariable("idRestaurant") Integer idRestaurant){
-        Vote vote = voteRepository.findByRestaurantIdAndUserIdAndDate(idRestaurant, AuthorizedUser.id(), getTodaySQLDate());
-        if (vote == null){
-            vote = new Vote();
-        } else {
-            if (getTodayHourOfDay() >= 11) {
+        Vote vote = voteRepository.findByUserIdAndDate(AuthorizedUser.id(), getTodaySQLDate());
+        if (vote != null)
+            if (getTodayHourOfDay() >= 11){
                 throw new TooLateException("It is too late, vote can't be changed");
+            } else {
+                voteRepository.delete(vote.getId());
             }
-        }
+        vote = new Vote();
         vote.setDate(getTodaySQLDate());
         vote.setRestaurant(restaurantRepository.getOne(idRestaurant));
         vote.setUser(userRepository.getOne(AuthorizedUser.id()));
