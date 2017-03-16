@@ -17,7 +17,7 @@ public class Menu extends BaseEntity{
     private Date date;
 
     @NotNull
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Dish> dishes;
 
     public Restaurant getRestaurant() {

@@ -2,10 +2,13 @@ package com.example.model;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
 
 @Entity
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"restaurant_id", "date", "user_id"})})
 public class Vote extends BaseEntity {
 
     @NotNull

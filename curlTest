@@ -27,4 +27,4 @@ curl -s -S -u user:user -X GET http://localhost:8080/api/v1/menus?date=2017-03-0
 # Any authenticated user can vote for any restaurant by id
 curl -s -S -u admin:admin -X POST http://localhost:8080/api/v1/votes/1
 # Any authenticated user can get vote results
-curl -s -S -u user:user -X GET http://localhost:8080/api/v1/results
+curl -s -S -u user:user -X GET http://localhost:8080/api/v1/votes
