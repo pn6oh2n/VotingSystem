@@ -84,7 +84,7 @@ public class DishControllerTests extends BaseTests {
     public void testUpdate() throws Exception {
         Dish dish = getCreatedDish("dish1", 33.33, true);
         dish.setPrice(99.99);
-        ResultActions action = mockMvc.perform(put(URL)
+        ResultActions action = mockMvc.perform(put(URL + "/" + dish.getId())
                 .header(HttpHeaders.AUTHORIZATION, HTTP_AUTH_ADMIN)
                 .content(JsonUtil.writeValue(dish))
                 .contentType(MediaType.APPLICATION_JSON))

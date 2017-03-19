@@ -1,6 +1,5 @@
 package com.example;
 
-import com.example.json.JsonUtil;
 import com.example.model.Vote;
 import org.junit.Test;
 import org.springframework.http.HttpHeaders;
@@ -31,32 +30,28 @@ public class VoteControllerTests extends BaseTests {
     @Test
     public void testAddVote() throws Exception {
         Vote vote = getCreatedVote(true);
-        mockMvc.perform(post(URL + "/" + getCreatedVote(true).getRestaurant().getId())
+        mockMvc.perform(post(URL)
                 .header(HttpHeaders.AUTHORIZATION, HTTP_AUTH_ADMIN)
-                .content(JsonUtil.writeValue(vote))
-                .contentType(MediaType.APPLICATION_JSON))
+                .param("idRestaurant", vote.getRestaurant().getId().toString()))
                 .andExpect(status().isOk());
     }
 
     @Test
     public void testAddVoteAgain() throws Exception {
         Vote vote = getCreatedVote(true);
-        mockMvc.perform(post(URL + "/" + vote.getRestaurant().getId())
+        mockMvc.perform(post(URL)
                 .header(HttpHeaders.AUTHORIZATION, HTTP_AUTH_ADMIN)
-                .content(JsonUtil.writeValue(vote))
-                .contentType(MediaType.APPLICATION_JSON))
+                .param("idRestaurant", vote.getRestaurant().getId().toString()))
                 .andExpect(status().isOk());
         if (getTodayHourOfDay() >= 11) {
-            mockMvc.perform(post(URL + "/" + vote.getRestaurant().getId())
+            mockMvc.perform(post(URL)
                     .header(HttpHeaders.AUTHORIZATION, HTTP_AUTH_ADMIN)
-                    .content(JsonUtil.writeValue(vote))
-                    .contentType(MediaType.APPLICATION_JSON))
+                    .param("idRestaurant", vote.getRestaurant().getId().toString()))
                     .andExpect(status().isAlreadyReported());
         } else {
-            mockMvc.perform(post(URL + "/" + vote.getRestaurant().getId())
+            mockMvc.perform(post(URL)
                     .header(HttpHeaders.AUTHORIZATION, HTTP_AUTH_ADMIN)
-                    .content(JsonUtil.writeValue(vote))
-                    .contentType(MediaType.APPLICATION_JSON))
+                    .param("idRestaurant", vote.getRestaurant().getId().toString()))
                     .andExpect(status().isOk());
         }
     }

@@ -8,7 +8,7 @@ public class Util {
     public static final String API_V1 = "/api/v1";
 
     public static Date getTodaySQLDate(){
-        return new Date(Calendar.getInstance().getTime().getTime());
+        return new Date(System.currentTimeMillis());
     }
 
     public static Integer getTodayHourOfDay(){

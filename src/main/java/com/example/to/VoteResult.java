@@ -9,17 +9,17 @@ public class VoteResult implements Serializable {
 
     private final Restaurant restaurant;
 
-    private final Integer votes;
+    private final Long votes;
 
     public VoteResult(@JsonProperty("restaurant") Restaurant restaurant,
-                      @JsonProperty("votes") Integer votes) {
+                      @JsonProperty("votes") Long votes) {
         this.restaurant = restaurant;
         this.votes = votes;
     }
 
     public Restaurant getRestaurant() {return restaurant;}
 
-    public Integer getVotes() {return votes;}
+    public Long getVotes() {return votes;}
 
     @Override
     public String toString() {

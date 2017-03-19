@@ -89,7 +89,7 @@ public class UserControllerTests extends BaseTests {
         User user = getCreatedUser("user", ROLE_USER, true);
         user.setName("user updated");
         user.setPassword("12345");
-        ResultActions action = mockMvc.perform(put(URL)
+        ResultActions action = mockMvc.perform(put(URL + "/" + user.getId())
                 .header(HttpHeaders.AUTHORIZATION, HTTP_AUTH_ADMIN)
                 .content(JsonUtil.writeValue(user))
                 .contentType(MediaType.APPLICATION_JSON))

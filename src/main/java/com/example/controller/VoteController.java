@@ -5,16 +5,13 @@ import com.example.dao.RestaurantRepository;
 import com.example.dao.UserRepository;
 import com.example.dao.VoteRepository;
 import com.example.exception.TooLateException;
-import com.example.model.Restaurant;
 import com.example.model.Vote;
 import com.example.to.VoteResult;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.Util.*;
@@ -37,22 +34,13 @@ public class VoteController {
     }
 
     @GetMapping
-    public Iterable<VoteResult> getResults(@RequestParam(value = "date", required = false) Date date){
-        List<VoteResult> voteResults = new ArrayList<>();
-        Vote vote = new Vote();
-        vote.setDate(date == null ? getTodaySQLDate() : date);
-        for (Restaurant restaurant: restaurantRepository.findAll()
-                ) {
-            vote.setRestaurant(restaurant);
-            Long votesCount = voteRepository.count(Example.of(vote));
-            voteResults.add(new VoteResult(restaurant,votesCount.intValue()));
-        }
-        return voteResults;
+    public List<VoteResult> getResults(@RequestParam(value = "date", required = false) Date date){
+        return voteRepository.getResults(date == null ? getTodaySQLDate() : date);
     }
 
-    @PostMapping("/{idRestaurant}")
+    @PostMapping
     @Transactional
-    public void addVote(@PathVariable("idRestaurant") Integer idRestaurant){
+    public void create(@RequestParam(value = "idRestaurant") Integer idRestaurant){
         Vote vote = voteRepository.findByUserIdAndDate(AuthorizedUser.id(), getTodaySQLDate());
         if (vote != null) {
             if (getTodayHourOfDay() >= 11) {

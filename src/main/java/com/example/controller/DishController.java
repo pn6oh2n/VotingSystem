@@ -12,6 +12,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 import static com.example.Util.API_V1;
 import static com.example.ValidationUtil.checkNotFoundWithId;
@@ -29,23 +30,23 @@ public class DishController {
     }
 
     @GetMapping
-    public Iterable<Dish> getAllDishes(){
+    public List<Dish> getAll(){
         return dishRepository.findAll();
     }
 
     @GetMapping("/{id}")
-    public Dish getDish(@PathVariable("id") Integer id){
+    public Dish get(@PathVariable("id") Integer id){
         return checkNotFoundWithId(dishRepository.findOne(id), id);
     }
 
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Dish updateDish(@Valid @RequestBody Dish dish){
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Dish update(@PathVariable("id") Integer id, @Valid @RequestBody Dish dish){
         Assert.notNull(dish, "dish must not be null");
-        return checkNotFoundWithId(dishRepository.save(dish), dish.getId());
+        return checkNotFoundWithId(dishRepository.save(dish), id);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Dish> createDish(@Valid @RequestBody Dish dish){
+    public ResponseEntity<Dish> create(@Valid @RequestBody Dish dish){
         Assert.notNull(dish, "dish must not be null");
         Dish created = dishRepository.save(dish);
         URI uri = ServletUriComponentsBuilder
@@ -57,7 +58,7 @@ public class DishController {
     }
 
     @DeleteMapping("/{id}")
-    public void delDish(@PathVariable("id") Integer id){
+    public void delete(@PathVariable("id") Integer id){
         Assert.notNull(id, "dish must not be null");
         checkNotFoundWithId(dishRepository.findOne(id), id);
         dishRepository.delete(id);

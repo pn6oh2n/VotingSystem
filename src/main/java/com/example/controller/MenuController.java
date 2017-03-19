@@ -42,19 +42,19 @@ public class MenuController {
     }
 
     @GetMapping
-    public Iterable<Menu> getMenusByDate(@RequestParam(value = "date", required = false) Date date){
+    public List<Menu> getByDate(@RequestParam(value = "date", required = false) Date date){
         return menuRepository.findByDate(date == null ? getTodaySQLDate() : date);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/{id}")
-    public Menu getMenu(@PathVariable("id") Integer id){
+    public Menu get(@PathVariable("id") Integer id){
         return checkNotFoundWithId(menuRepository.findOne(id), id);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Menu> createMenu(@Valid @RequestBody MenuTo menuTo){
+    public ResponseEntity<Menu> create(@Valid @RequestBody MenuTo menuTo){
         Assert.notNull(menuTo, "menu must not be null");
         Assert.notEmpty(menuTo.getDishes(), "dish list must not be empty");
         Menu oldMenu = menuRepository.findByDateAndRestaurantId(menuTo.getDate(),menuTo.getRestaurantId());
@@ -75,7 +75,7 @@ public class MenuController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
-    public void delMenu(@PathVariable("id") Integer id){
+    public void delete(@PathVariable("id") Integer id){
         Assert.notNull(id, "menu must not be null");
         checkNotFoundWithId(menuRepository.findOne(id), id);
         menuRepository.delete(id);

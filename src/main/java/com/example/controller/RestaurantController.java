@@ -12,6 +12,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 import static com.example.Util.API_V1;
 import static com.example.ValidationUtil.checkNotFoundWithId;
@@ -29,23 +30,23 @@ public class RestaurantController {
     }
 
     @GetMapping
-    public Iterable<Restaurant> getAllRestaurants(){
+    public List<Restaurant> getAll(){
         return restaurantRepository.findAll();
     }
 
     @GetMapping("/{id}")
-    public Restaurant getRestaurant(@PathVariable("id") Integer id){
+    public Restaurant get(@PathVariable("id") Integer id){
         return checkNotFoundWithId(restaurantRepository.findOne(id), id);
     }
 
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Restaurant updateRestaurant(@Valid @RequestBody Restaurant restaurant){
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Restaurant update(@PathVariable("id") Integer id, @Valid @RequestBody Restaurant restaurant){
         Assert.notNull(restaurant, "restaurant must not be null");
-        return checkNotFoundWithId(restaurantRepository.save(restaurant), restaurant.getId());
+        return checkNotFoundWithId(restaurantRepository.save(restaurant), id);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Restaurant> createRestaurant(@Valid @RequestBody Restaurant restaurant){
+    public ResponseEntity<Restaurant> create(@Valid @RequestBody Restaurant restaurant){
         Assert.notNull(restaurant, "restaurant must not be null");
         Restaurant created = restaurantRepository.save(restaurant);
         URI uri = ServletUriComponentsBuilder
@@ -57,7 +58,7 @@ public class RestaurantController {
     }
 
     @DeleteMapping("/{id}")
-    public void delRestaurant(@PathVariable("id") Integer id){
+    public void delete(@PathVariable("id") Integer id){
         Assert.notNull(id, "restaurant must not be null");
         checkNotFoundWithId(restaurantRepository.findOne(id), id);
         restaurantRepository.delete(id);

@@ -12,6 +12,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 import static com.example.Util.API_V1;
 import static com.example.ValidationUtil.checkNotFoundWithId;
@@ -29,23 +30,23 @@ public class UserController {
     }
 
     @GetMapping
-    public Iterable<User> getAllUsers(){
+    public List<User> getAll(){
         return userRepository.findAll();
     }
 
     @GetMapping("/{id}")
-    public User getUser(@PathVariable("id") Integer id){
+    public User get(@PathVariable("id") Integer id){
         return checkNotFoundWithId(userRepository.findOne(id), id);
     }
 
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public User updateUser(@Valid @RequestBody User user){
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public User update(@PathVariable("id") Integer id, @Valid @RequestBody User user){
         Assert.notNull(user, "user must not be null");
-        return checkNotFoundWithId(userRepository.save(user), user.getId());
+        return checkNotFoundWithId(userRepository.save(user), id);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> createUser(@Valid @RequestBody User user){
+    public ResponseEntity<User> create(@Valid @RequestBody User user){
         Assert.notNull(user, "user must not be null");
         User created = userRepository.save(user);
         URI uri = ServletUriComponentsBuilder
@@ -57,7 +58,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public void delUser(@PathVariable("id") Integer id){
+    public void delete(@PathVariable("id") Integer id){
         Assert.notNull(id, "user must not be null");
         checkNotFoundWithId(userRepository.findOne(id), id);
         userRepository.delete(id);

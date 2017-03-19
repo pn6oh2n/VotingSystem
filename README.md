@@ -14,30 +14,35 @@ If user votes again the same day:
 If it is before 11:00 we asume that he changed his mind.  
 If it is after 11:00 then it is too late, vote can't be changed  
 Each restaurant provides new menu each day.  
+Application is using H2 database stored in a file.  
+Database schema will be updated automatically when application started.  
+User with administrative credentials will be created automatically when application started:  
+login: admin  
+password: admin  
+The list of the dishes is shared between all the restaurants.  
+Transfer object MenuTo is used only for creating a menu.
 ## Installation
 `mvn install`
-## Usage
-Database schema will be updated automatically when application started.  
-User with role "Admin" will be created automatically when application started.  
-Launching application: `java -jar target/VotingSystem-0.0.1-SNAPSHOT.jar`
+## Launching application
+`java -jar target/VotingSystem-0.0.1-SNAPSHOT.jar`
 ## Possible curl commands
 For windows use `Git Bash`
 #### Admin can manipulate users
 insert  `curl -s -S -u admin:admin -X POST -H "Content-Type: application/json" -d '{"name":"user", "password":"user", "role":"ROLE_USER"}' http://localhost:8080/api/v1/users`  
 get all `curl -s -S -u admin:admin -X GET http://localhost:8080/api/v1/users`  
-update  `curl -s -S -u admin:admin -X POST -H "Content-Type: application/json" -d '{"id":1, "name":"user updated", "password":"password updated"}' http://localhost:8080/api/v1/users`  
+update  `curl -s -S -u admin:admin -X POST -H "Content-Type: application/json" -d '{"id":1, "name":"user updated", "password":"password updated"}' http://localhost:8080/api/v1/users/1`  
 get     `curl -s -S -u admin:admin -X GET http://localhost:8080/api/v1/users/1`  
 delete  `curl -s -S -u admin:admin -X DELETE http://localhost:8080/api/v1/users/1`  
 #### Admin can manipulate restaurants
 insert  `curl -s -S -u admin:admin -X POST -H "Content-Type: application/json" -d '{"name":"Restaurant 1"}' http://localhost:8080/api/v1/restaurants`  
 get all `curl -s -S -u admin:admin -X GET http://localhost:8080/api/v1/restaurants`  
-update  `curl -s -S -u admin:admin -X POST -H "Content-Type: application/json" -d '{"id":1, "name":"Restaurant 1 updated"}' http://localhost:8080/api/v1/restaurants`  
+update  `curl -s -S -u admin:admin -X POST -H "Content-Type: application/json" -d '{"id":1, "name":"Restaurant 1 updated"}' http://localhost:8080/api/v1/restaurants/1`  
 get     `curl -s -S -u admin:admin -X GET http://localhost:8080/api/v1/restaurants/1`  
 delete  `curl -s -S -u admin:admin -X DELETE http://localhost:8080/api/v1/restaurants/1`
 #### Admin can manipulate dishes
 insert  `curl -s -S -u admin:admin -X POST -H "Content-Type: application/json" -d '{"name":"Dish 1", "price":12.34}' http://localhost:8080/api/v1/dishes`  
 get all `curl -s -S -u admin:admin -X GET http://localhost:8080/api/v1/dishes`  
-update  `curl -s -S -u admin:admin -X POST -H "Content-Type: application/json" -d '{"id":1, "name":"Dish 1 updated", "price":99.99}' http://localhost:8080/api/v1/dishes`  
+update  `curl -s -S -u admin:admin -X POST -H "Content-Type: application/json" -d '{"id":1, "name":"Dish 1 updated", "price":99.99}' http://localhost:8080/api/v1/dishes/1`  
 get     `curl -s -S -u admin:admin -X GET http://localhost:8080/api/v1/dishes/1`  
 delete  `curl -s -S -u admin:admin -X DELETE http://localhost:8080/api/v1/dishes/1`
 #### Admin can manipulate menus
@@ -46,8 +51,9 @@ get all `curl -s -S -u admin:admin -X GET http://localhost:8080/api/v1/menus?dat
 delete  `curl -s -S -u admin:admin -X DELETE http://localhost:8080/api/v1/menus/1`
 #### Any authenticated user can get a menu for today or any other date
 get a menu for today     `curl -s -S -u admin:admin -X GET http://localhost:8080/api/v1/menus`  
-get a menu for some date `curl -s -S -u user:user -X GET http://localhost:8080/api/v1/menus?date=2017-03-06`
+get a menu for some date `curl -s -S -u admin:admin -X GET http://localhost:8080/api/v1/menus?date=2017-03-06`
 #### Any authenticated user can vote for any restaurant by id
-vote for restaurant with id 1 `curl -s -S -u admin:admin -X POST http://localhost:8080/api/v1/votes/1`
-#### Any authenticated user can get vote results
-get vote results `curl -s -S -u user:user -X GET http://localhost:8080/api/v1/results`
+vote for restaurant with id 1 `curl -s -S -u admin:admin -X POST -d 'idRestaurant=1' http://localhost:8080/api/v1/votes`
+#### Any authenticated user can get vote results for today or any other date
+get vote results `curl -s -S -u admin:admin -X GET http://localhost:8080/api/v1/votes`
+get vote results `curl -s -S -u admin:admin -X GET http://localhost:8080/api/v1/votes?date=2017-03-06`

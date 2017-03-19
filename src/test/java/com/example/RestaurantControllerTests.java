@@ -84,7 +84,7 @@ public class RestaurantControllerTests extends BaseTests {
     public void testUpdate() throws Exception {
         Restaurant restaurant = getCreatedRestaurant("restaurant1", true);
         restaurant.setName("restaurant1 updated");
-        ResultActions action = mockMvc.perform(put(URL)
+        ResultActions action = mockMvc.perform(put(URL + "/" + restaurant.getId())
                 .header(HttpHeaders.AUTHORIZATION, HTTP_AUTH_ADMIN)
                 .content(JsonUtil.writeValue(restaurant))
                 .contentType(MediaType.APPLICATION_JSON))
